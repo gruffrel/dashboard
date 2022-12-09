@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Error</title>
+  </head>
+  <body>
+    <div id='err'></div>
+    <script>
+      err=document.getElementById('err');
+      const search=window.location.search;
+      const params = new URLSearchParams(search);
+      const desc = params.get('msg');
+      err.innerHTML=desc;
+    </script>
+  </body>
+</html>

@@ -1,1 +1,45 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Callback</title>
+  </head>
+  <body>
+    <script>
+
+    function gotoPage(page,msg) {
+
+        var location=window.location;
+        var href=location.href
+        href =href.split('?')[0] // drop any params
+        console.log(href);
+        href=href.replace("callback.html",page);
+        if(msg!=null) href=href+"?msg="+msg;
+        console.log(href);
+
+        window.location.replace(href);
+
+
+    }
+
+      var params = new URLSearchParams(window.location.search);
+      var state = params.get('state')
+      var code  = params.get('code')
+      var fudge = sessionStorage.getItem("dashboard-fudge");
+
+      if(state==null) {
+         gotoPage("error.html","no state")
+      } else if(fudge==null) {
+        gotoPage("error.html","unexpected callback")
+      } else if(fudge!=state) {
+        gotoPage("error.html","illegal callback")
+      } else if(code==null){
+        gotoPage("error.html","no code")
+      } else {
+        sessionStorage.setItem("dashboard-code",code)
+        gotoPage("index.html")
+      }
+
+    </script>
+  </body>
+</html>
