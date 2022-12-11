@@ -25,7 +25,7 @@
       var params = new URLSearchParams(window.location.search);
       var state = params.get('state')
       var code  = params.get('code')
-      var fudge = sessionStorage.getItem("dashboard-fudge");
+      var fudge = "check1" //sessionStorage.getItem("dashboard-fudge");
 
       if(state==null) {
          gotoPage("error.html","no state")
@@ -36,8 +36,23 @@
       } else if(code==null){
         gotoPage("error.html","no code")
       } else {
-        sessionStorage.setItem("dashboard-code",code)
-        gotoPage("index.html")
+        // got a code 
+        fetch('https://app.asana.com/-/oauth_token', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+  "grant_type": "authorization_code",
+  "client_id": "1203516656368369",
+  "redirect_uri": "https://app.asana.com/-/oauth_authorize?response_type=code&client_id=1203516656368369&redirect_uri=https%3A%2F%2Fgruffwizard.dev%2Fdashboard%2Fcallback.html&state=state1",
+  "code":code })
+})
+.then(response => response.json())
+.then(response => console.log(JSON.stringify(response)))
+        //sessionStorage.setItem("dashboard-code",code)
+        //gotoPage("index.html")
       }
 
     </script>
